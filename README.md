@@ -8,5 +8,5 @@ PSO.py : Use **PSO(Particle Swarm Optimization)** to resolve Rastrigin and STYBL
 TSP.py : Use **TS(Tabu Search)** to resolve the TSP(Travelling salesman problem, TSP).  
 TSP_exhaustive_enumeration.py : Exhaustive enumeration all possible results to compared with TS method in TSP.py.  
 
-Following is the result of TSP.py, which shows a decrease in the total distance required to travel through all the cities from 682 to 575.
+Following is the result of TSP.py, which shows a decrease in the total distance required to travel through all the cities from 682 to 575.  
 ![tabu-search result](./tabu-search_result.png)
