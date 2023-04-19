@@ -1,65 +1,67 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import time
+from typing import List
 
 ### parameter setting ###
-D=50  #dimension of problem
-Lb=[-5] * D #lower bound variables
-Ub=[5] * D #upper bound
-N=200  #population size
-alpha=1 #randomness strength 0-1 (步長因子)
-beta=1 #attractiveness constant (螢火蟲最大吸引度，通常當成吸引力常數)
-gamma=1 #absorption coefficient (光吸收係數)
-theta=1 #randomness reduction factor (矢向量)
-iter_max=100 #max iterations
+D = 50  # dimension of problem
+Lb = [-5] * D # lower bound variables
+Ub = [5] * D # upper bound
+N = 200  # population size
+alpha = 1 # randomness strength 0-1(步長因子)
+beta = 1 # attractiveness constant(螢火蟲最大吸引度，通常當成吸引力常數)
+gamma = 1 # absorption coefficient(光吸收係數)
+theta = 1 # randomness reduction factorX(矢向量)
+iter_max = 100 # max iterations
 obj_sta = 'min'
 
-### objective function ###
-def Rastrigin_fun(val, dim):
+### objective function: test1(Rastrigin function)
+def Rastrigin_fun(val:List[int], dim:int) -> int:
     obj = 0
     for dim_ite in range(dim): 
         obj += (val[:, dim_ite] ** 2 - 10 * np.cos(2 * np.pi * val[:, dim_ite]))
     obj += dim * 10
     return obj
 
-def Styblinski_Tang_fun(val, dim):
+### objective function: test2(STYBLINSKI-TANG function)
+def Styblinski_Tang_fun(val:List[int], dim:int) -> int:
     obj = 0
     for dim_ite in range(dim):
         obj += val[:, dim_ite] ** 4 - 16 * val[:, dim_ite] ** 2 + 5 * val[:, dim_ite]
     obj /= 2
     return obj
 
-### main program ###
+### main program
 sta_time = time.time()
-pop = Lb + np.random.uniform(size=(N,D)) * np.subtract(Ub, Lb)
+pop = Lb + np.random.uniform(size=(N,D)) * np.subtract(Ub, Lb) # firefly location
 fit = Styblinski_Tang_fun(pop, D)
 record = [] # record for plot
 record_pos = []
 
-for iter in range(iter_max): # main iteration loop
-    for i in range(N):       # for all the fireflies
-        for j in range(N):   # for all the fireflies
-            # if j more attractive, then we should update
+for iter in range(iter_max): 
+    for i in range(N): 
+        for j in range(N):
+            # if firefly(j) is more attractive, then we update firefly(i)
             if obj_sta == 'max':
                 con = fit[i] < fit[j]
             else:
                 con = fit[i] > fit[j]
-            if con: #change > or <
+            if con: # firefly(j) is preform more better 
                 steps = alpha * (np.random.uniform(size=D) - 0.5) * np.abs(np.subtract(Ub, Lb))
                 r = np.linalg.norm(pop[i] - pop[j], ord=2, axis=0)
                 beta_attr = beta * np.exp(-gamma * r)
-                #Find Xnew using Xi and Xj
+                # Find Xnew using Xi and Xj
                 X_new = pop[i] + beta_attr * (pop[j] - pop[i]) + steps
-                #check Xnew is within bounds
+                # check Xnew is within bounds
                 for dim in range(D):
                     if X_new[dim] > Ub[dim]:
                         X_new[dim] = Ub[dim]
                     elif X_new[dim] < Lb[dim]:
                         X_new[dim] = Ub[dim]
-                #get the new function value for Xnew
+                # get the new function value for Xnew
                 fnew = Styblinski_Tang_fun(np.expand_dims(X_new, axis=0), D)
                 
-                #if fnew is better than fx[i]
+                # if fnew is better than fx[i]
                 if (obj_sta == 'max') and (fnew > fit[i]):
                     fit[i] = fnew
                     pop[i] = X_new

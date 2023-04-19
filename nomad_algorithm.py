@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import math
 import time
 
+### objective function 1
 def Rastrigin_fun(val, dim):
     obj = 0
     for dim_ite in range(dim): 
@@ -12,6 +13,7 @@ def Rastrigin_fun(val, dim):
     obj += dim * 10
     return obj
 
+### objective function 2
 def Styblinski_Tang_fun(val, dim):
     obj = 0
     for dim_ite in range(dim):

@@ -1,4 +1,3 @@
-#%%
 import numpy as np
 import random
 import bisect
@@ -209,5 +208,3 @@ plt.title('The convergence histories of GA')
 plt.xlabel('The generation of chromosome')
 plt.ylabel('The best fitness value in this generation')
 plt.show()
-
-#%%
