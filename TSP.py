@@ -11,7 +11,7 @@ class TSP:
     Parameter:
     comb : 1/0, 控制計算距離前是否要先交換其中兩座不同城市
     '''
-    def get_the_val(self, comb:List(str)=None) -> int:
+    def get_the_val(self, comb:List[str]=None) -> int:
         # 先換組合再計算距離
         if comb:
             total_dis = np.zeros(len(comb))
